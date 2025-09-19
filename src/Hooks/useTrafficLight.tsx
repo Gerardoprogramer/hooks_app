@@ -29,15 +29,18 @@ export const useTrafficLight = () => {
 
         if (seconds === 0) {
             setLight(prev => prev === 'red' ? 'green' : prev === 'green' ? 'yellow' : 'red');
-            setSeconds(10);
+            Light === 'green' ? setSeconds(5) : setSeconds(10);
             return;
         }
 
     }, [seconds, Light]);
 
-    return { 
-        Light,
+    return {
         seconds,
-        colors
-        };
+
+        percentage: (seconds / 10) * 100,
+        greenLight: Light === 'green' ? colors.green : 'bg-gray-500',
+        yellowLight: Light === 'yellow' ? colors.yellow : 'bg-gray-500',
+        redLight: Light === 'red' ? colors.red : 'bg-gray-500',
+    };
 }
