@@ -14,6 +14,8 @@ export const usePokemon = ({ id }: props) => {
 
     const [pokemon, setPokemon] = useState<Pokemon | null>(null);
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const getPokemonById = async (id: number) => {
 
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -26,11 +28,16 @@ export const usePokemon = ({ id }: props) => {
         };
 
         setPokemon(pokemon);
+        setLoading(false);
     }
 
     useEffect(() => {
         getPokemonById(id);
     }, [id]);
 
-    return {pokemon};
-}
+    return {
+        pokemon,
+        loading,
+        formattedId: id.toString().padStart(3, '0')
+    };
+};
