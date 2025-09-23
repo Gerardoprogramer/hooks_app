@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReducer } from 'react';
 
 import { TasksReducer, getStatsInicialState } from './Reducer/TasksReducer';
@@ -14,6 +14,9 @@ export const TasksApp = () => {
   const [inputValue, setInputValue] = useState('');
   const [state, despatch] = useReducer(TasksReducer, getStatsInicialState());
 
+  useEffect(() => {
+    localStorage.setItem('tasks-state', JSON.stringify(state));
+  }, [state]);
 
   const addTodo = () => {
     if(inputValue.length === 0) return;
