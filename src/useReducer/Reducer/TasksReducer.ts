@@ -1,3 +1,6 @@
+
+import * as z from "zod";
+
 interface Todo {
     id: number;
     text: string;
@@ -16,6 +19,20 @@ export type TasksAction =
     | { type: 'TOGGLE_TODO'; payload: { id: number } }
     | { type: 'DELETE_TODO'; payload: { id: number } };
 
+
+const taskSchema = z.object({
+    id: z.number(),
+    text: z.string(),
+    completed: z.boolean(),
+});
+
+const taskStateSchema = z.object({
+    todos: z.array(taskSchema),
+    length: z.number(),
+    completedCount: z.number(),
+    pendingCount: z.number(),
+});
+
 export const getStatsInicialState = (): TasksState => {
     const storedState = localStorage.getItem('tasks-state');
 
@@ -27,7 +44,20 @@ export const getStatsInicialState = (): TasksState => {
             pendingCount: 0,
         };
     }
-    return JSON.parse(storedState);
+
+    const parseResult = taskStateSchema.safeParse(JSON.parse(storedState));
+
+    if(parseResult.error){
+    console.warn('Invalid state in localStorage, resetting to initial state.', parseResult.error);
+
+    return {
+            todos: [],
+            length: 0,
+            completedCount: 0,
+            pendingCount: 0,
+        };
+    }
+    return parseResult.data;
 
 }
 
