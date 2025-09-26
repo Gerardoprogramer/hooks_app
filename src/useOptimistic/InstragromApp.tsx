@@ -1,5 +1,7 @@
 import { useOptimistic, useState, useTransition } from 'react';
 
+import { toast } from 'sonner'
+
 interface Comment {
   id: number;
   text: string;
@@ -33,17 +35,33 @@ export const InstagromApp = () => {
 
   const handleAddComment = async (formData: FormData) => {
     const message = formData.get('post-message') as string;
-    console.log(message);
 
     AddOptimisticComments(message);
 
     startTransition(async () => {
+
+      //simula tiempo de peticion al server
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      setComments(prev => [...prev, {
-        id: new Date().getTime(),
-        text: message
-      }])
+  //condicional para observar que pasa si lo promesa del server falla o no falla. (emulador)
+      if (false) {
+        setComments(prev => [...prev, {
+          id: new Date().getTime(),
+          text: message
+        }])
+      } else {
+        setComments(prev => prev)
+        toast('Error al agregar el comentario',{
+          description: 'Intente Nuevamente',
+          duration: 10_000,
+          position: 'top-right',
+          action: {
+            label: 'cerrar',
+            onClick: () => toast.dismiss(),
+          }
+        }
+        )
+      }
     });
   };
 
