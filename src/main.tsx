@@ -14,8 +14,9 @@ import { Suspense } from 'react'
 // import { MemoHook } from './memo/MemoHook'
 // import { MemoCounter } from './memo/MemoCounter'
 // import { InstagromApp } from './useOptimistic/InstragromApp'
-import { ClientInformation } from './use-suspense/ClientInformation'
-import {getUserAction } from './use-suspense/api/get-user.action'
+// import { ClientInformation } from './use-suspense/ClientInformation'
+// import {getUserAction } from './use-suspense/api/get-user.action'
+import { ProfessionalApp } from './useContext/ProfessionalApp'
 
 import './index.css'
 
@@ -32,12 +33,14 @@ createRoot(document.getElementById('root')!).render(
     {/* <MemoHook /> */}
     {/* <MemoCounter /> */}
     {/* <InstagromApp /> */}
-    <Suspense fallback={
+    {/* <Suspense fallback={
       <div className='bg-gradient flex flex-col gap-4'>
         <h1 className='text-5xl text-white'>Loading...</h1>
       </div>
     }>
       <ClientInformation getUser={getUserAction(100)}/>
-    </Suspense>
+    </Suspense> */}
+
+    <ProfessionalApp />
   </StrictMode>,
 )
